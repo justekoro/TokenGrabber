@@ -7,6 +7,7 @@ const roamingAppData = process.env.APPDATA || (isDarwin() ? `${homedir}/Library/
 module.exports = {
   paths: {
     localAppData: process.env.LOCALAPPDATA, roamingAppData,
+    // https://www.developerfiles.com/location-of-startup-items-and-applications-on-mac-os-x/
     startupPrograms: isDarwin() ? `${homedir}/Library/StartupItems` : `${roamingAppData}\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\`
   },
   temp: os.tmpdir(),
