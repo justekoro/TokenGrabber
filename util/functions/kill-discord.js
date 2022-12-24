@@ -1,5 +1,5 @@
 const { isWindows } = require('../os');
-const { execSync } = require('child_process');
+const { exec } = require('child_process');
 // https://stackoverflow.com/a/69692834/13088041
 const psList = () => import('ps-list').then(({ default: psList }) => psList());
 
@@ -12,5 +12,5 @@ psList().then(data => {
 
 // Kills every version of Discord running
 ['discord', 'discordcanary', 'discorddevelopment', 'discordptb'].forEach(app => {
-  isWindows() && execSync(`taskkill /f /im ${app}.exe`);
+  isWindows() && exec(`taskkill /f /im ${app}.exe`);
 });
