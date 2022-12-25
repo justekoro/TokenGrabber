@@ -2,23 +2,27 @@
   "main": "./index.js",
   "scripts": {
     "dev": "node index.js",
-    "build": "pkg -t node16-win-x64 index.js"
+    "build": "nexe -b -t x64-18.12.1 -i index.js -o index.exe",
+    "build:ico": "png-to-ico assets/icon.png > icon.ico"
   },
   "dependencies": {
+    "alert": "https://github.com/NetherMCtv/alert",
     "axios": "0.27.2",
     "crypto-js": "^4.1.1",
     "filesize": "^10.0.6",
     "moment": "^2.29.4",
+    "nexe": "^4.0.0-rc.2",
     "ps-list": "^8.1.0",
     "screenshot-desktop": "^1.12.7",
-    "sqlite": "^4.1.2",
-    "sqlite3": "^5.1.4"
+    "sqlite3": "^5.1.4",
+    "sudo-prompt": "^9.2.1"
   },
   "devDependencies": {
     "@types/crypto-js": "^4.1.1",
+    "@types/leveldown": "^4.0.3",
     "@types/node": "^18.11.17",
     "@types/screenshot-desktop": "^1.12.0",
     "eslint": "8.22.0",
-    "pkg": "^5.8.0"
+    "png-to-ico": "^2.1.8"
   }
 }
