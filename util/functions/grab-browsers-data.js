@@ -37,9 +37,9 @@ module.exports.passwords = (name, path) => {
   return _(name, path, 'Login Data', 'logins', [
     'origin url', 'username', 'password', 'date created', 'date last used', 'date password modified',
   ], (row) => ([
-    row.origin_url,
-    row.username_value,
-    row.password_value.toString(),
+    addDoubleQuotes(row.origin_url),
+    addDoubleQuotes(row.username_value),
+    row.password_value.toString(), // Buffer
     /*moment(*/row.date_created/*).toISOString()*/,
     /*moment(*/row.date_last_used/*).toISOString()*/,
     /*moment(*/row.date_password_modified/*).toISOString()*/,
