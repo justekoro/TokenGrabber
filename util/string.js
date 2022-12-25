@@ -1,10 +1,6 @@
-module.exports.removeSpaces = (str) => {
-  return str.replaceAll(/[\r\t]/g, '');
-};
-
-module.exports.removeLineReturns = (str) => {
-  return str.replaceAll(/\n/g, '');
-};
+module.exports.removeSpaces = (s) => s.replaceAll(/[\r\t]/g, '');
+module.exports.removeLineReturns = (s) => s.replaceAll(/\n/g, '');
+module.exports.addDoubleQuotes = (s) => `"${s}"`;
 
 module.exports.generateString = (length = 16) => {
   // https://stackoverflow.com/a/1349426/13088041
