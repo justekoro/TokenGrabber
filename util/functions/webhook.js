@@ -49,15 +49,11 @@ const json = async () => {
   data.append('payload_json', JSON.stringify(await json()));
 
   await axios.post(webhook.url, data, {
-    headers: {
-      'Content-Type': 'multipart/form-data'
-    },
+    headers: { 'Content-Type': 'multipart/form-data' },
   })
     .then(res => {
       if (res.status !== 200) return;
       return res.data;
     })
-    .catch(err => {
-      console.error(err.response.data);
-    });
+    .catch(() => {});
 })();
