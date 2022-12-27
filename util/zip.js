@@ -45,9 +45,6 @@ module.exports.generateZipFromFiles = (directoryPaths, filesToInclude, outputPat
     const jsZip = await createZipFromFiles(directoryPaths, filesToInclude, true);
     jsZip.generateNodeStream({ type: 'nodebuffer', streamFiles: true })
       .pipe(fs.createWriteStream(outputPath))
-      .on('finish', () => {
-        console.log(`${outputPath} written.`);
-        resolve(outputPath);
-      });
+      .on('finish', () => resolve(outputPath));
   });
 };
