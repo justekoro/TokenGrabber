@@ -1,4 +1,4 @@
-const { isWindows } = require('../os');
+const { isWindows } = require('../util/os');
 const { exec } = require('child_process');
 // https://stackoverflow.com/a/69692834/13088041
 const psList = () => import('ps-list').then(({ default: psList }) => psList());

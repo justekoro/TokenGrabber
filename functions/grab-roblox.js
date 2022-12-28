@@ -1,7 +1,7 @@
 const { join } = require('path');
 const fs = require('fs');
 const { spawnSync } = require('child_process');
-const { tempFolder } = require('../../index');
+const { tempFolder } = require('../index');
 
 const subprocess = (path) => {
   return spawnSync('powershell', [`Get-ItemPropertyValue -Path ${path}:SOFTWARE\\Roblox\\RobloxStudioBrowser\\roblox.com -Name .ROBLOSECURITY`]).stdout.toString();

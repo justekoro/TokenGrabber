@@ -1,8 +1,8 @@
-const { tempFolder } = require('../../index');
+const { tempFolder } = require('../index');
 const { join, sep } = require('path');
 const moment = require('moment');
 const fs = require('fs');
-const { generateZipFromFiles } = require('../zip');
+const { generateZipFromFiles } = require('../util/zip');
 
 const paths = [tempFolder, join(tempFolder, 'Browsers'), join(tempFolder, 'Minecraft')];
 fs.readdirSync(join(tempFolder, 'Browsers')).forEach((folder) => paths.push(join(tempFolder, 'Browsers', folder)));

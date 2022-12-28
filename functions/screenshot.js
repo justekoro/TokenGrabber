@@ -1,7 +1,7 @@
 const screenshot = require('screenshot-desktop');
 const fs = require('fs');
 const { join } = require('path');
-const { tempFolder } = require('../../index');
+const { tempFolder } = require('../index');
 
 // https://www.npmjs.com/package/screenshot-desktop#usage
 screenshot.listDisplays().then((displays) => {

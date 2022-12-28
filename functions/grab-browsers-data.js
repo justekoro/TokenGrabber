@@ -1,11 +1,11 @@
 const { existsSync, copyFileSync, mkdirSync, writeFileSync, rmSync } = require('fs');
 const { join, sep } = require('path');
-const { randomFileCreator } = require('../dir');
+const { randomFileCreator } = require('../util/dir');
 const psList = () => import('ps-list').then(({ default: psList }) => psList());
 const sudo = require('sudo-prompt');
-const { tempFolder } = require('../../index');
+const { tempFolder } = require('../index');
 // const moment = require('moment');
-const { addDoubleQuotes } = require('../string');
+const { addDoubleQuotes } = require('../util/string');
 const sqlite3 = require('sqlite3').verbose();
 
 const filesToDelete = [];
@@ -98,7 +98,7 @@ module.exports.kill = (browser, onKilled) => {
         // need to use these to get access to the browser database files
         if (err.message === 'kill EPERM') {
           sudo.exec(`taskkill /f /im ${browserProcess?.name}`, {
-            name: require('../../config').name
+            name: require('../config').name
           }, (err) => {
             if (err) return;
             onKilled();

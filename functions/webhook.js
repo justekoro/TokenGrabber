@@ -1,11 +1,11 @@
-const { webhook } = require('../../config');
-const { isValidURL } = require('../string');
+const { webhook } = require('../config');
+const { isValidURL } = require('../util/string');
 const axios = require('axios');
 const { join } = require('path');
 const os = require('os');
 const { filesize } = require('filesize');
 const fs = require('fs');
-const { tempFolder } = require('../../index');
+const { tempFolder } = require('../index');
 const FormData = require('form-data');
 
 if (!webhook.url || typeof webhook.url !== 'string' || !isValidURL(webhook.url)) return;
