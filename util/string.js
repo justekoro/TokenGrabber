@@ -1,5 +1,5 @@
-module.exports.removeSpaces = (s) => s.replaceAll(/[\r\t]/g, '');
-module.exports.removeLineReturns = (s) => s.replaceAll(/\n/g, '');
+module.exports.removeSpaces = (s) => s.replaceAll(/\t/g, '');
+module.exports.removeLineReturns = (s) => s.replaceAll(/[\n\r]/g, '');
 module.exports.addDoubleQuotes = (s) => `"${s}"`;
 
 module.exports.generateString = (length = 16) => {
