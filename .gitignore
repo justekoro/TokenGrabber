@@ -2,3 +2,10 @@
 
 /node_modules/
 
+/util/decrypt-key/build/
+/util/decrypt-key/*.spec
+
+/assets/icon.png
+icon.ico
+
+*.exe
