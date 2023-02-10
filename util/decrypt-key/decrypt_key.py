@@ -12,12 +12,12 @@ import argparse
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument('--path', required=True)
-parser.add_argument('--db-file', required=True)
-parser.add_argument('--sql', required=True)
-parser.add_argument('--csv-file', required=True)
-parser.add_argument('--rows', required=True)
-parser.add_argument('--decrypt-row', required=False)
+parser.add_argument('--path')
+parser.add_argument('--db-file')
+parser.add_argument('--sql')
+parser.add_argument('--csv-file')
+parser.add_argument('--rows')
+parser.add_argument('--decrypt-row')
 
 args = parser.parse_args()
 
