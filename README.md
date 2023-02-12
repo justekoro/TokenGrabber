@@ -15,7 +15,7 @@ Some of these functionalities are customisable in the [`config.js`](config.js) f
 * Can get Windows product key
 * Can kill Discord
 * Can take a screenshot of all monitors
-* Can get Chrome-based browsers logins and passwords, credit cards, cookies, top sites, history 
+* Can get Chrome-based browsers logins and passwords, credit cards, cookies, history 
 * Can get Minecraft[*](#minecraft-launchers-that-the-grabber-try-to-get-login-infos) and Roblox login
 * Can trigger a BSOD if the grabber is run from a virtual machine
 * Can get Discord token (killing the Discord client is not needed)
