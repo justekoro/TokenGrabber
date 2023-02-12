@@ -5,6 +5,9 @@
 /util/decrypt-key/build/
 /util/decrypt-key/*.spec
 
+/util/decrypt-token/build/
+/util/decrypt-token/*.spec
+
 /assets/icon.png
 icon.ico
 

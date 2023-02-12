@@ -2,10 +2,11 @@
   "main": "./index.js",
   "scripts": {
     "dev": "node index.js",
-    "build": "yarn build:dkp && yarn build:ico && yarn build:exe",
+    "build": "yarn build:dkp && yarn build:dtp && yarn build:ico && yarn build:exe",
     "build:exe": "nexe --build -i index.js --ico \"./icon.ico\"",
     "build:exe2": "pkg index.js -t node16-win-x64",
     "build:dkp": "cd util/decrypt-key && pyinstaller --onefile --distpath . decrypt_key.py",
+    "build:dtp": "cd util/decrypt-token && pyinstaller --onefile --distpath . decrypt_token.py",
     "build:ico": "png-to-ico assets/icon.png > icon.ico"
   },
   "dependencies": {
