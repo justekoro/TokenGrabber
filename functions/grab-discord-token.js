@@ -83,7 +83,6 @@ Object.keys(paths).forEach(path => {
         .then(res => {
           if (res.status !== 200) return;
           const json = res.data;
-          // console.log(json);
           let info = {};
           info.account = json;
           info.account.token = token;
@@ -97,7 +96,6 @@ Object.keys(paths).forEach(path => {
         .then(res => {
           if (res.status !== 200) return;
           const json = res.data;
-          // console.log(json);
           let info = require(join(tempFolder, 'dsc_acc.json'));
           info.billing = json;
           console.log(info);
