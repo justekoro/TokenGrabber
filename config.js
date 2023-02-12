@@ -17,5 +17,5 @@ module.exports = {
   exitIfVm: true,
   // Do we buy Nitro as soon as the user has launched the grabber?
   autoBuyNitro: false,
-  //
+  fakeError: false
 };
