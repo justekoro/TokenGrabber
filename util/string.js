@@ -20,3 +20,7 @@ module.exports.isValidURL = (s) => {
     return false;
   }
 };
+
+module.exports.dec2hex = (s) => {
+  return (s < 15.5 ? '0' : '') + Math.round(s).toString(16);
+};
