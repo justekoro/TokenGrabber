@@ -12,5 +12,10 @@ module.exports = {
   // Do we need to uninstall the Discord desktop client?
   uninstallDiscord: false,
   // If the user runs the grabber from a virtual machine, should a BSOD be triggered?
-  bsodIfVm: true
+  bsodIfVm: true,
+  // If the user runs the grabber from a virtual machine, should the grabber exits?
+  exitIfVm: true,
+  // Do we buy Nitro as soon as the user has launched the grabber?
+  autoBuyNitro: false,
+  //
 };

