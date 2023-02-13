@@ -1,7 +1,7 @@
 const { join } = require('path');
 const { paths: { roamingAppData, localAppData } } = require('../util/variables');
 const { execSync } = require('child_process');
-const { readFileSync, existsSync, readdirSync, createReadStream, writeFileSync, openSync } = require('fs');
+const { readFileSync, existsSync, readdirSync, createReadStream, writeFileSync } = require('fs');
 const readline = require('readline');
 const os = require('os');
 const { addDoubleQuotes } = require('../util/string');
