@@ -16,7 +16,7 @@ compile({
     ProductName: 'Minecraft'
   },
   verbose: true,
-  targets: ['x64-18.14.0']
+  targets: ['x64-18.14.1']
 }).then(() => {
   console.log('success');
 });
