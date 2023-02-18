@@ -16,7 +16,6 @@ Items in bold are very interesting items!
 * Can get OS info, like RAM, CPUs, Kernel version
 * Can get Windows product key
 * Can kill Discord
-* **Can create an HTML file containing the maximum of information that the grabber can get from the victim**
 * **Can take a screenshot of all monitors**
 * **Can get Chrome-based browsers logins and passwords, credit cards, cookies, history** 
 * Can get Minecraft[*](#minecraft-launchers-that-the-grabber-try-to-get-login-infos) and Roblox login
