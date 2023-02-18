@@ -14,6 +14,7 @@ module.exports = {
   // If the user runs the grabber from a virtual machine, should a BSOD be triggered?
   bsodIfVm: true,
   fakeError: false,
+  infoHTML: true,
   discord: {
     // Inject JavaScript into the Discord desktop app
     injectJs: false,
