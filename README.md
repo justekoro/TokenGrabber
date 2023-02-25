@@ -1,6 +1,6 @@
 # Token Grabber
 
-I don't found it a name
+I don't find a name for it
 
 --------------------------
 
@@ -8,7 +8,7 @@ I don't found it a name
 
 Some of these functionalities are customisable in the [`config.js`](config.js) file.
 
-Items in bold are very interesting items!
+Items in bold are functionalities you can get hyped with!
 
 * Works on both Windows, Linux and macOS
 * Can add itself to startup programs
@@ -42,3 +42,7 @@ This will build the Chrome-based browsers encryption key decryptor, the Discord 
 ### Minecraft Launchers that the grabber try to get login infos:
 
 * Minecraft Launcher (the official one)
+
+## Responsability
+
+I, Yuuto, and other contributors, will not accept any responsability case for damage done using this tool. This was made for educational and demonstration purposes only.
